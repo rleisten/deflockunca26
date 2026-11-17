@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    
+    
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAFETY AS A SCAPEGOAT</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<link rel="stylesheet" href="content/style.css">
+<script>
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+  } catch (e) {}
+</script>
+</head>
+<body>
+<header>
+  <div>
+    <h1>SAFETY AS A SCAPEGOAT: Flock and Automated Surveillance</h1>
+    <p>Click a campus or a camera to see how its data is collected, stored, and shared.</p>
+  </div>
+  <div class="header-actions">
+    <select id="campus-picker" aria-label="Choose a campus">
+      <option value="">All campuses</option>
+    </select>
+    <label id="overlay-opacity-wrap" hidden>
+      <span class="sr-only">Campus map opacity</span>
+      <input id="overlay-opacity" type="range" min="0.2" max="1" step="0.05" value="0.8">
+    </label>
+    <!-- Campus map button is hidden. To bring it back, delete the word "hidden" below. -->
+    <button id="overlay-toggle" class="btn" type="button" hidden aria-pressed="false" title="Show UNC Asheville campus map" aria-label="Show UNC Asheville campus map">🎓</button>
+    <button id="more-viz" class="btn" type="button" aria-haspopup="dialog">Who's accessing this data?</button>
+    <button id="more-info" class="btn" type="button" data-modal="more-info">More info</button>
+    <button id="satellite-toggle" class="btn" type="button" aria-pressed="false"></button>
+    <button id="theme-toggle" class="btn" type="button"></button>
+  </div>
+</header>
+<main>
+  <div id="map"></div>
+  <button id="panel-toggle" class="btn" type="button" aria-controls="panel-wrap" aria-expanded="true"></button>
+  <aside id="panel-wrap">
+    <button id="about-flock" class="btn about-btn" type="button" data-modal="how-data-is-shared">About Flock Data</button>
+    <div id="panel"></div>
+    <footer id="provenance">
+      Camera locations: DeFlock / OpenStreetMap contributors (ODbL), crowd-sourced and
+      possibly incomplete. 
+    </footer>
+  </aside>
+</main>
+
+<dialog id="modal">
+  <button class="modal-close btn" type="button" data-close-modal aria-label="Close">×</button>
+  <div id="modal-body"></div>
+</dialog>
+
+<div id="carousel" role="dialog" aria-modal="true" aria-label="More visualizations" hidden>
+  <button class="carousel-close btn" type="button" data-carousel-close aria-label="Close">×</button>
+  <div class="carousel-track">
+    <section class="carousel-slide" aria-label="Visualization 1 of 3">
+      <!-- Paste the Tableau embed code for chart 1 inside this div -->
+      <div class="viz-embed centeringContainer">
+      <div class='tableauPlaceholder' id='viz1794592919361' style='position: relative'><noscript><a href='#'><img alt='UNCA Network Audits ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;UN&#47;UNCANetworkAudit&#47;UNCANetworkAudits&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='UNCANetworkAudit&#47;UNCANetworkAudits' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;UN&#47;UNCANetworkAudit&#47;UNCANetworkAudits&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='device' value='desktop' /></object></div>
+      <script type='text/javascript'>
+        var divElement = document.getElementById('viz1794592919361');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        vizElement.style.width='100%';vizElement.style.height='100%';
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+      </script>
+      </div>
+    </section>
+    <section class="carousel-slide" aria-label="Visualization 2 of 3">
+      <!-- Paste the Tableau embed code for chart 2 inside this div -->
+      <div class="viz-embed centeringContainer">
+      <div class='tableauPlaceholder' id='viz1794599769518' style='position: relative'><noscript><a href='#'><img alt='Agency Searches by Month ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ci&#47;CircleChart_17945996839170&#47;AgencySearchesbyMonth&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CircleChart_17945996839170&#47;AgencySearchesbyMonth' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ci&#47;CircleChart_17945996839170&#47;AgencySearchesbyMonth&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='device' value='desktop' /></object></div>
+      <script type='text/javascript'>
+        var divElement = document.getElementById('viz1794599769518');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        vizElement.style.width='100%';vizElement.style.height='100%';
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+      </script>
+      </div>
+    </section>
+    <section class="carousel-slide" aria-label="Visualization 3 of 3">
+      <!-- Paste the Tableau embed code for chart 3 inside this div -->
+      <div class="viz-embed centeringContainer">
+      <div class='tableauPlaceholder' id='viz1794599804325' style='position: relative'><noscript><a href='#'><img alt='Total Search by Agency ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;ba&#47;basicbarchart_17945997137900&#47;TotalSearchbyAgency&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='basicbarchart_17945997137900&#47;TotalSearchbyAgency' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;ba&#47;basicbarchart_17945997137900&#47;TotalSearchbyAgency&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='device' value='desktop' /></object></div>
+      <script type='text/javascript'>
+        var divElement = document.getElementById('viz1794599804325');
+        var vizElement = divElement.getElementsByTagName('object')[0];
+        vizElement.style.width='100%';vizElement.style.height='100%';
+        var scriptElement = document.createElement('script');
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+      </script>
+      </div>
+    </section>
+   
+  </div>
+  <button class="carousel-nav btn prev" type="button" data-carousel-prev aria-label="Previous visualization">‹</button>
+  <button class="carousel-nav btn next" type="button" data-carousel-next aria-label="Next visualization">›</button>
+  <div class="carousel-dots"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script type="module" src="code/main.js"></script>
+</body>
+</html>
